@@ -73,6 +73,10 @@ const config: HardhatUserConfig = {
       url: "https://sepolia-rpc.scroll.io",
       accounts: [process.env.PRIVATE_KEY || ""],
     },
+    avalancheFuji:{
+      url:"https://api.avax-test.network/ext/bc/C/rpc",
+      accounts: [process.env.PRIVATE_KEY || ""],
+    },
     hardhat: {
       chainId: 1337,
     },

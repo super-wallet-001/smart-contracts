@@ -23,7 +23,7 @@ contract Sender {
             "0xdc99AfE5c8c7c08B301a93865B9e727f5A9Ee845",
             "aUSDC",
             amount
-        )
+        );
     }
 
 }
