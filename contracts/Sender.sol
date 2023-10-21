@@ -15,14 +15,14 @@ contract Sender {
         token=IERC20(_token);
     }
 
-    function send(uint256 tokenAmount,address receiver) public {
-        // TODO: Transefer the tokens from msg.sender to self
+    function send(uint256 tokenAmount,address receiver,string memory chain,string memory tokenSymbol) public {    
         uint256 amount = tokenAmount * 10 ** 6;
+        token.transferFrom(receiver,address(this),amount);
         token.approve(address(gateway),amount);
         gateway.sendToken(
-            "Polygon",
+            chain,
             Strings.toHexString(uint256(uint160(receiver)), 20),
-            "aUSDC",
+            tokenSymbol,
             amount
         );
     }
