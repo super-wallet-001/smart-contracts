@@ -32,7 +32,7 @@ const func: DeployFunction  = async function (hre: HardhatRuntimeEnvironment) {
     
     const SuperWalletBridge_v2 = await deploy("SuperWalletBridge_v2", {
         from: deployer,
-        args: ["",""],
+        args: [gateWay,gasReceiver],
         log: true,
     });
 
