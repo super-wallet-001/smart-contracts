@@ -5,6 +5,7 @@ import {IAxelarGateway} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+// Old: 0xaa38f1eB37C111B4048c19670CBe53081fE058b7
 contract Sender {
 
     IAxelarGateway public immutable gateway;
@@ -15,9 +16,9 @@ contract Sender {
         token=IERC20(_token);
     }
 
-    function send(uint256 tokenAmount,address receiver,string memory chain,string memory tokenSymbol) public {    
+    function send(uint256 tokenAmount,address receiver,string memory chain,string memory tokenSymbol) public {
         uint256 amount = tokenAmount * 10 ** 6;
-        token.transferFrom(receiver,address(this),amount);
+        token.transferFrom(address(msg.sender),address(this),amount);
         token.approve(address(gateway),amount);
         gateway.sendToken(
             chain,
