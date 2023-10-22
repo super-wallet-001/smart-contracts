@@ -50,7 +50,7 @@ contract SuperWalletBridge is AxelarExecutable {
     }
 
     /**
-     * To be executed by axelar gateway 
+     * To be executed by axelar gateway
      */
     function _executeWithToken(
         string calldata,
@@ -67,7 +67,7 @@ contract SuperWalletBridge is AxelarExecutable {
 
     /**
      * Send tokens to the specified address on the specified destination chain
-     * @param destinationChain destination chain name 
+     * @param destinationChain destination chain name
      * @param destinationAddress recipient address on the destination chain
      * @param symbol token symbol to send
      * @param amount amount of tokens to send
@@ -98,18 +98,17 @@ contract SuperWalletBridge is AxelarExecutable {
 
     /**
      * Deposit tokens to the contract
-     * @param tokenAmount address of the token to deposit
-     * @param receiver address of the receiver on the destination chain
      * @param chain destination chain name
      * @param tokenSymbol symbol of the token to deposit
+     * @param tokenAmount address of the token to deposit
      */
     function send(
-        uint256 tokenAmount,address receiver,string memory chain,string memory tokenSymbol
+        string memory chain, string memory tokenSymbol, uint256 tokenAmount
     ) external payable {
         require(msg.value > 0, 'Gas payment is required');
         uint256 contractBalance = IERC20(gateway.tokenAddresses(tokenSymbol)).balanceOf(address(this));
         require(contractBalance >= tokenAmount, 'Contract does not have enough tokens');
-        _sendTokens(chain, receiver, tokenSymbol, tokenAmount);
+        _sendTokens(chain, msg.sender, tokenSymbol, tokenAmount);
     }
 
     /**
@@ -143,21 +142,4 @@ contract SuperWalletBridge is AxelarExecutable {
         bridgeAddresses[chainName] = contractAddress;
     }
 
-    ////////////////////////////////////////////Helper functions////////////////////////////////////////////
-    function toAsciiString(address x) internal pure returns (string memory) {
-        bytes memory s = new bytes(40);
-        for (uint i = 0; i < 20; i++) {
-            bytes1 b = bytes1(uint8(uint(uint160(x)) / (2**(8*(19 - i)))));
-            bytes1 hi = bytes1(uint8(b) / 16);
-            bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
-            s[2*i] = char(hi);
-            s[2*i+1] = char(lo);
-        }
-        return string(s);
-    }
-
-    function char(bytes1 b) internal pure returns (bytes1 c) {
-        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
-        else return bytes1(uint8(b) + 0x57);
-    }
 }
